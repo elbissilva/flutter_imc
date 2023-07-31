@@ -40,6 +40,7 @@ class _ImcPageState extends State<ImcPage> {
             "Calculadora de IMC",
             textAlign: TextAlign.left,
           ),
+          centerTitle: true,
           backgroundColor: Colors.green),
       floatingActionButton: FloatingActionButton(
         child: const Icon(Icons.add),
@@ -58,64 +59,66 @@ class _ImcPageState extends State<ImcPage> {
                       Text("Adicione o nome o Peso e a Altura do Paciente")
                     ],
                   ),
-                  content: Column(
-                    children: [
-                      TextField(
-                        controller: nomeController,
-                        keyboardType: TextInputType.text,
-                        style: const TextStyle(color: Colors.black),
-                        decoration: const InputDecoration(
-                          prefixIcon: Icon(
-                            Icons.person,
-                            color: Colors.red,
+                  content: SingleChildScrollView(
+                    child: Column(
+                      children: [
+                        TextField(
+                          controller: nomeController,
+                          keyboardType: TextInputType.text,
+                          style: const TextStyle(color: Colors.black),
+                          decoration: const InputDecoration(
+                            prefixIcon: Icon(
+                              Icons.person,
+                              color: Colors.red,
+                            ),
+                            contentPadding: EdgeInsets.only(top: 20),
+                            enabledBorder: UnderlineInputBorder(
+                                borderSide: BorderSide(
+                              color: Colors.white,
+                            )),
+                            hintText: "Nome",
+                            hintStyle: TextStyle(color: Colors.black),
                           ),
-                          contentPadding: EdgeInsets.only(top: 20),
-                          enabledBorder: UnderlineInputBorder(
-                              borderSide: BorderSide(
-                            color: Colors.white,
-                          )),
-                          hintText: "Nome",
-                          hintStyle: TextStyle(color: Colors.black),
                         ),
-                      ),
-                      TextField(
-                        controller: pesoController,
-                        keyboardType: TextInputType.number,
-                        style: const TextStyle(color: Colors.black),
-                        decoration: const InputDecoration(
-                          prefixIcon: Icon(
-                            Icons.balance,
-                            color: Colors.red,
+                        TextField(
+                          controller: pesoController,
+                          keyboardType: TextInputType.number,
+                          style: const TextStyle(color: Colors.black),
+                          decoration: const InputDecoration(
+                            prefixIcon: Icon(
+                              Icons.balance,
+                              color: Colors.red,
+                            ),
+                            contentPadding: EdgeInsets.only(top: 20),
+                            enabledBorder: UnderlineInputBorder(
+                                borderSide: BorderSide(
+                              color: Colors.white,
+                            )),
+                            hintText: "Peso kg",
+                            hintStyle: TextStyle(color: Colors.black),
                           ),
-                          contentPadding: EdgeInsets.only(top: 20),
-                          enabledBorder: UnderlineInputBorder(
-                              borderSide: BorderSide(
-                            color: Colors.white,
-                          )),
-                          hintText: "Peso kg",
-                          hintStyle: TextStyle(color: Colors.black),
                         ),
-                      ),
-                      TextField(
-                        controller: alturaController,
-                        keyboardType: TextInputType.number,
-                        style: const TextStyle(color: Colors.black),
-                        decoration: const InputDecoration(
-                          prefixIcon: Icon(
-                            Icons.gas_meter_sharp,
-                            color: Colors.red,
+                        TextField(
+                          controller: alturaController,
+                          keyboardType: TextInputType.number,
+                          style: const TextStyle(color: Colors.black),
+                          decoration: const InputDecoration(
+                            prefixIcon: Icon(
+                              Icons.gas_meter_sharp,
+                              color: Colors.red,
+                            ),
+                            contentPadding: EdgeInsets.only(top: 20),
+                            enabledBorder: UnderlineInputBorder(
+                                borderSide: BorderSide(
+                              color: Colors.white,
+                            )),
+                            hintText: "Altura",
+                            hintStyle: TextStyle(color: Colors.black),
                           ),
-                          contentPadding: EdgeInsets.only(top: 20),
-                          enabledBorder: UnderlineInputBorder(
-                              borderSide: BorderSide(
-                            color: Colors.white,
-                          )),
-                          hintText: "Altura",
-                          hintStyle: TextStyle(color: Colors.black),
                         ),
-                      ),
-                      Text(imccalc),
-                    ],
+                        Text(imccalc),
+                      ],
+                    ),
                   ),
                   actions: [
                     TextButton(
@@ -147,7 +150,7 @@ class _ImcPageState extends State<ImcPage> {
                               situacaoAtual = "OBESIDADE GRAVE";
                             }
 
-                            imccalc = axn.toString();
+                            imccalc = axn.toStringAsFixed(2);
                           });
                           await pessoaRepository.addPessoa(Pessoa(
                               nomeController.text,
@@ -165,13 +168,19 @@ class _ImcPageState extends State<ImcPage> {
               });
         },
       ),
-      body: ListView.builder(
-          itemCount: _pessoaslist.length,
-          itemBuilder: (BuildContext bc, int index) {
-            var pessoa = _pessoaslist[index];
-            return Text(
-                "Nome: ${pessoa.nome}, Peso:  ${pessoa.peso.toString()}Kg, Altura: ${pessoa.altura.toString()}m, IMC: ${pessoa.imc}, Estado${pessoa.situacao}}");
-          }),
+      body: Container(
+        margin: const EdgeInsets.symmetric(horizontal: 10, vertical: 20),
+        child: ListView.builder(
+            itemCount: _pessoaslist.length,
+            itemBuilder: (BuildContext bc, int index) {
+              var pessoa = _pessoaslist[index];
+              return ListTile(
+                  title: Text(
+                "Nome:  ${pessoa.nome}, Peso:  ${pessoa.peso.toString()}Kg, Altura: ${pessoa.altura.toString()}m, IMC: ${pessoa.imc}, Resultado ${pessoa.situacao}",
+                style: const TextStyle(fontWeight: FontWeight.w700),
+              ));
+            }),
+      ),
     ));
   }
 }
